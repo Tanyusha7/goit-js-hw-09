@@ -5,24 +5,29 @@ function getRandomHexColor() {
 }
 
 const body = document.querySelector('body');
-console.log(body);
 const startBtn = document.querySelector('[data-start]');
-console.log(startBtn);
-
 const stopBtn = document.querySelector('[data-stop]');
-console.log(stopBtn);
+
+let timerId = null;
+const disabledBtn = startBtn.getAttribute('disabled');
 
 startBtn.addEventListener('click', onStartBtnClick);
 stopBtn.addEventListener('click', onStopBtnClick);
 
 function onStartBtnClick() {
-  const color = getRandomHexColor();
-  body.style.background = color;
+  if (disabledBtn) {
+    console.log(disabledBtn);
+    return;
+  }
 
-  setTimeout(() => {
-    console.log('hello');
+  timerId = setInterval(() => {
+    const color = getRandomHexColor();
+    body.style.background = color;
+    startBtn.setAttribute('disabled', 'active');
   }, 1000);
 }
+
 function onStopBtnClick() {
-  console.log(poka);
+  clearInterval(timerId);
+  startBtn.removeAttribute('disabled');
 }
