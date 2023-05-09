@@ -1,2 +1,0 @@
-const o=document.querySelector("body");console.log(o);const t=document.querySelector("[data-start]");console.log(t);const e=document.querySelector("[data-stop]");console.log(e),t.addEventListener("click",(function(){const t=`#${Math.floor(16777215*Math.random()).toString(16).padStart(6,0)}`;o.style.background=t,setTimeout((()=>{console.log("hello")}),1e3)})),e.addEventListener("click",(function(){console.log(poka)}));
-//# sourceMappingURL=01-color-switcher.5840bdb2.js.map
