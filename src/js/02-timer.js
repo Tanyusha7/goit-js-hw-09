@@ -1,8 +1,10 @@
 import flatpickr from 'flatpickr';
 
 import 'flatpickr/dist/flatpickr.min.css';
+import { Notify } from 'notiflix/build/notiflix-notify-aio';
 
 const btnStart = document.querySelector('[data-start]');
+btnStart.setAttribute('disabled', 'active');
 console.log(btnStart);
 const inputValue = document.querySelector('#datetime-picker');
 console.log(inputValue);
@@ -12,28 +14,40 @@ const timerValue = document.querySelectorAll('.value');
 console.log(timerValue);
 console.log(timerValue[0]);
 
-btnStart.addEventListener('click', () => options.onClose());
-
+// btnStart.addEventListener('click', onClose());
 const options = {
   enableTime: true,
   time_24hr: true,
-  defaultDate: new Date('June 12, 2024'),
+  defaultDate: new Date('2024, May 12'),
   minuteIncrement: 1,
   onClose(selectedDates) {
-    setInterval(() => {
-      const currentTime = Date.now();
-      const startTime = options.defaultDate.getTime();
-      console.log(startTime);
-      console.log(currentTime);
-      //   if (Date.now(selectedDates(1)) > startTime) {
-      //     return alert('Please choose a date in the future');
-      //   }
-      const resultOfDifferenceTime = startTime - currentTime;
-      console.log(resultOfDifferenceTime);
-      const deltaTime = convertMs(resultOfDifferenceTime);
-      updateTimerFace(deltaTime);
-    }, 1000);
-    console.log(currentTime[0]);
+    if (selectedDates[0] < options.defaultDate) {
+      btnStart.getAttribute('disabled');
+      clearInterval(this.intervalId);
+      Notify.failure('Please choose a date in the future');
+      return;
+    }
+
+    btnStart.removeAttribute('disabled');
+    const disabledBtn = btnStart.getAttribute('disabled');
+    if (!disabledBtn) {
+      return setInterval(() => {
+        const currentTime = Date.now(selectedDates[1]);
+        console.log(String(selectedDates[0]));
+        const startTime = options.defaultDate.getTime();
+        console.log('currentTime', String(selectedDates[0]), currentTime);
+        console.log('starttime', options.defaultDate, startTime);
+
+        const resultOfDifferenceTime = startTime - currentTime;
+        console.log(startTime);
+        console.log(currentTime);
+        console.log(resultOfDifferenceTime);
+        const deltaTime = convertMs(resultOfDifferenceTime);
+        updateTimerFace(deltaTime);
+      }, 1000);
+    }
+
+    console.log(selectedDates[0]);
     console.log(Date.now(selectedDates[0]));
   },
 };
@@ -84,4 +98,4 @@ function convertMs(ms) {
 
 console.log(convertMs(2000)); // {days: 0, hours: 0, minutes: 0, seconds: 2}
 console.log(convertMs(140000)); // {days: 0, hours: 0, minutes: 2, seconds: 20}
-console.log(convertMs(24140000)); // {days: 0, hours: 6 minutes: 42, seconds: 20}
+console.log(convertMs(13522443)); // {days: 0, hours: 6 minutes: 42, seconds: 20}
