@@ -7,41 +7,58 @@ const btnStart = document.querySelector('[data-start]');
 btnStart.setAttribute('disabled', 'active');
 console.log(btnStart);
 const inputValue = document.querySelector('#datetime-picker');
-console.log(inputValue);
+// console.log(inputValue);
 const timerEl = document.querySelector('.timer');
-console.log(timerEl);
-const timerValue = document.querySelectorAll('.value');
-console.log(timerValue);
-console.log(timerValue[0]);
+timerEl.style.marginTop = '20px';
+timerEl.style.display = 'flex';
+timerEl.style.gap = '10px';
+// console.log(timerEl);
 
-// btnStart.addEventListener('click', onClose());
+const timerValue = document.querySelectorAll('.field .value');
+timerValue[0].style.display = 'flex';
+timerValue[0].style.justifyContent = 'center';
+timerValue[0].style.fontSize = '36px';
+timerValue[1].style.display = 'flex';
+timerValue[1].style.justifyContent = 'center';
+timerValue[1].style.fontSize = '36px';
+timerValue[2].style.display = 'flex';
+timerValue[2].style.justifyContent = 'center';
+timerValue[2].style.fontSize = '36px';
+timerValue[3].style.display = 'flex';
+timerValue[3].style.justifyContent = 'center';
+timerValue[3].style.fontSize = '36px';
+
+const nameValue = document.querySelectorAll('.field .label');
+nameValue[0].style.textTransform = 'uppercase';
+nameValue[1].style.textTransform = 'uppercase';
+nameValue[2].style.textTransform = 'uppercase';
+nameValue[3].style.textTransform = 'uppercase';
+
 const options = {
   enableTime: true,
   time_24hr: true,
-  defaultDate: new Date('2024, May 12'),
+  defaultDate: new Date('2023, May 15'),
   minuteIncrement: 1,
-  onClose(selectedDates) {
+  onClose(...selectedDates) {
+    const disabledBtn = btnStart.getAttribute('disabled');
+    const startTime = options.defaultDate.getTime();
+
     if (selectedDates[0] < options.defaultDate) {
       btnStart.getAttribute('disabled');
-      clearInterval(this.intervalId);
       Notify.failure('Please choose a date in the future');
       return;
     }
 
     btnStart.removeAttribute('disabled');
-    const disabledBtn = btnStart.getAttribute('disabled');
-    if (!disabledBtn) {
+    if (disabledBtn) {
       return setInterval(() => {
-        const currentTime = Date.now(selectedDates[1]);
-        console.log(String(selectedDates[0]));
-        const startTime = options.defaultDate.getTime();
-        console.log('currentTime', String(selectedDates[0]), currentTime);
-        console.log('starttime', options.defaultDate, startTime);
+        btnStart.setAttribute('disabled', 'active');
 
+        const currentTime = Date.now(selectedDates);
         const resultOfDifferenceTime = startTime - currentTime;
-        console.log(startTime);
-        console.log(currentTime);
-        console.log(resultOfDifferenceTime);
+        // console.log(startTime);
+        // console.log(currentTime);
+        // console.log(resultOfDifferenceTime);
         const deltaTime = convertMs(resultOfDifferenceTime);
         updateTimerFace(deltaTime);
       }, 1000);
@@ -53,16 +70,6 @@ const options = {
 };
 
 flatpickr(inputValue, { ...options });
-
-timerEl.style.marginTop = '20px';
-timerEl.style.display = 'flex';
-timerEl.style.gap = '10px';
-// console.log(timerValue.firstElemetChild);
-// timer.children.style.display = 'flex';
-// // timer.style.
-// console.log(timer.firstElementChild);
-// timerValue[03].style.display = 'flex';
-// timerValue.style.width = '40px';
 
 function updateTimerFace({ days, hours, minutes, seconds }) {
   (timerValue[0].textContent = `${days}`),
