@@ -5,24 +5,19 @@ import { Notify } from 'notiflix/build/notiflix-notify-aio';
 
 const btnStart = document.querySelector('[data-start]');
 btnStart.setAttribute('disabled', 'active');
-// btnStart.addEventListener('click', onSubmit);
 
 const inputValue = document.querySelector('#datetime-picker');
-
 const timerEl = document.querySelector('.timer');
 
 const options = {
-  // intervalId: 0,
-
-  //--//
   enableTime: true,
   time_24hr: true,
   defaultDate: new Date(),
   minuteIncrement: 1,
 
   onClose(...selectedDates) {
-    intervalId = null;
-    console.log(intervalId);
+    let intervalId = null;
+
     const currentTime = Date.parse(selectedDates[1]);
 
     if (currentTime < Date.now()) {
@@ -32,8 +27,8 @@ const options = {
 
     btnStart.addEventListener('click', onSubmit);
     btnStart.removeAttribute('disabled');
+
     function onSubmit() {
-      isActive = true;
       return (intervalId = setInterval(() => {
         btnStart.setAttribute('disabled', 'active');
 
@@ -41,9 +36,8 @@ const options = {
         const resultOfDifferenceTime = currentTime - Date.now();
         const deltaTime = convertMs(resultOfDifferenceTime);
         updateTimerFace(deltaTime);
-        console.log(resultOfDifferenceTime);
+
         if (resultOfDifferenceTime < 1000) {
-          console.log(intervalId);
           clearInterval(intervalId);
         }
       }, 1000));
