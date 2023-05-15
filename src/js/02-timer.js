@@ -11,48 +11,43 @@ const inputValue = document.querySelector('#datetime-picker');
 
 const timerEl = document.querySelector('.timer');
 
-// function onSubmit(e) {
-//   const disabledBtn = btnStart.getAttribute('disabled');
-//   if (!disabledBtn) {
-//     return setInterval(() => {}, 1000);
-//   }
-// }
-
 const options = {
+  // intervalId: 0,
+
+  //--//
   enableTime: true,
   time_24hr: true,
   defaultDate: new Date(),
   minuteIncrement: 1,
-  onClose(...selectedDates) {
-    const disabledBtn = btnStart.getAttribute('disabled');
-    const startTime = options.defaultDate.getTime();
-    const currentTime = Date.parse(selectedDates[1]);
-    // console.log(currentTime);
-    // console.log(startTime);
 
-    console.log(selectedDates[1]);
-    console.log(options.defaultDate);
-    if (currentTime < startTime) {
-      console.log(selectedDates[1]);
-      console.log(options.defaultDate);
-      // btnStart.getAttribute('disabled');
+  onClose(...selectedDates) {
+    intervalId = null;
+    console.log(intervalId);
+    const currentTime = Date.parse(selectedDates[1]);
+
+    if (currentTime < Date.now()) {
       btnStart.setAttribute('disabled', 'active');
       return Notify.failure('Please choose a date in the future');
     }
 
+    btnStart.addEventListener('click', onSubmit);
     btnStart.removeAttribute('disabled');
-    setInterval(() => {
-      btnStart.setAttribute('disabled', 'active');
-      // console.log('start', startTime);
-      // console.log('selekt', currentTime);
-      const startTime = options.defaultDate.getTime();
-      const currentTime = Date.parse(selectedDates[1]);
-      const resultOfDifferenceTime = currentTime - startTime;
+    function onSubmit() {
+      isActive = true;
+      return (intervalId = setInterval(() => {
+        btnStart.setAttribute('disabled', 'active');
 
-      console.log(resultOfDifferenceTime);
-      const deltaTime = convertMs(resultOfDifferenceTime);
-      updateTimerFace(deltaTime);
-    }, 1000);
+        const currentTime = Date.parse(selectedDates[1]);
+        const resultOfDifferenceTime = currentTime - Date.now();
+        const deltaTime = convertMs(resultOfDifferenceTime);
+        updateTimerFace(deltaTime);
+        console.log(resultOfDifferenceTime);
+        if (resultOfDifferenceTime < 1000) {
+          console.log(intervalId);
+          clearInterval(intervalId);
+        }
+      }, 1000));
+    }
   },
 };
 
