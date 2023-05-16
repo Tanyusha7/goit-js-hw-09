@@ -19,6 +19,7 @@ function onSubmit(e) {
   amount = Number(inputAmountValue.value);
 
   for (let i = 0; i < amount; i += 1) {
+    console.log(amount);
     position = 1;
     delay = Number(inputDelayValue.value);
 
