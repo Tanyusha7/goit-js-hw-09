@@ -6,7 +6,7 @@ const btnCreateProm = document.querySelector('button');
 btnCreateProm.addEventListener('click', onSubmit);
 let position;
 let step;
-
+let amount;
 function onSubmit(e) {
   e.preventDefault();
   const inputDelayValue = form.elements['delay'];
